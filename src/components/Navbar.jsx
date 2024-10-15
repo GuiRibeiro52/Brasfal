@@ -91,11 +91,11 @@ const Navbar = () => {
       >
         <ul className="flex flex-col gap-4 p-5 text-lg mt-20">
           <li>
-            <Link to="/" onClick={() => { scrollToTop(); toggleMenu(); }} className={getLinkClasses("/")}>Home</Link>
+            <Link to="/Brasfal" onClick={() => { scrollToTop(); toggleMenu(); }} className={getLinkClasses("/")}>Home</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/#quem-somos" onClick={handleScrollToSection} className={getLinkClasses("/#quem-somos")}>Empresa</Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/produtos" onClick={toggleMenu} className={getLinkClasses("/produtos")}>Produtos</Link>
           </li>
