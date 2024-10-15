@@ -42,14 +42,6 @@ const Navbar = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleScrollToSection = (event) => {
-    if (location.pathname === '/') {
-      event.preventDefault();
-      document.getElementById('quem-somos').scrollIntoView({ behavior: 'smooth' });
-      closeMenu(); 
-    }
-  };
-
   return (
     <nav className="fixed top-0 w-full bg-white z-50 py-5 px-8 shadow-md md:px-20 md:gap-16 md:justify-evenly flex justify-between items-center">
       <div className="flex flex-start">
