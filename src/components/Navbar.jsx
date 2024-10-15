@@ -46,7 +46,7 @@ const Navbar = () => {
     if (location.pathname === '/') {
       event.preventDefault();
       document.getElementById('quem-somos').scrollIntoView({ behavior: 'smooth' });
-      closeMenu(); // Fechar o menu se estiver no mobile
+      closeMenu(); 
     }
   };
 
@@ -54,22 +54,22 @@ const Navbar = () => {
     <nav className="fixed top-0 w-full bg-white z-50 py-5 px-8 shadow-md md:px-20 md:gap-16 md:justify-evenly flex justify-between items-center">
       <div className="flex flex-start">
         <h2 className="text-black text-4xl font-bold">
-          <Link to="/" onClick={scrollToTop}>BRASFAL</Link>
+          <Link to="/Brasfal" onClick={scrollToTop}>BRASFAL</Link>
         </h2>
       </div>
       <div className="hidden md:flex gap-8 text-lg">
         <ul className="text-black flex gap-8 text-lg">
           <li>
-            <Link to="/" onClick={scrollToTop} className={getLinkClasses("/")}>Home</Link>
+            <Link to="/Brasfal" onClick={scrollToTop} className={getLinkClasses("/")}>Home</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/#quem-somos" onClick={handleScrollToSection} className={getLinkClasses("/#quem-somos")}>Empresa</Link>
+          </li> */}
+          <li>
+            <Link to="/produtos" className={getLinkClasses("/produtos")}>Produtos</Link>
           </li>
           <li>
             <Link to="/contato" className={getLinkClasses("/contato")}>Contato</Link>
-          </li>
-          <li>
-            <Link to="/produtos" className={getLinkClasses("/produtos")}>Produtos</Link>
           </li>
         </ul>
       </div>
