@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
-
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -13,17 +11,26 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/posts/${id}`);
-        setProduct(response.data);
-        setSelectedImage(response.data.images[0]); 
+        // Atualize a URL para buscar o db.json hospedado no GitHub
+        const response = await axios.get('https://raw.githubusercontent.com/GuiRibeiro52/Brasfal-products/refs/heads/main/db.json');
+
+        // Buscar o produto específico baseado no ID
+        const productData = response.data.posts.find(post => post.id === id);
+
+        if (productData) {
+          setProduct(productData);
+          setSelectedImage(productData.images[0]); // Define a primeira imagem como a selecionada
+        } else {
+          setError('Produto não encontrado.');
+        }
       } catch (error) {
         console.error('Error fetching product:', error);
-        setError('Error loading product details.');
+        setError('Erro ao carregar os detalhes do produto.');
       }
     };
 
     fetchProduct();
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0); // Rolar para o topo ao carregar o produto
   }, [id]);
 
   if (error) {
@@ -31,7 +38,7 @@ const ProductDetail = () => {
   }
 
   if (!product) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    return <div className="flex items-center justify-center min-h-screen">Carregando...</div>;
   }
 
   return (
@@ -53,18 +60,14 @@ const ProductDetail = () => {
         </div>
         <div className='mr-5 text-white'>
           <h2 className='text-[42px] font-semibold'>{product.title}</h2>
-          {/* <p className='text-2xl font-medium  mb-[15px]'>R$ {product.price ? product.price.toFixed(2) : 'N/A'}</p> */}
           
           <div className='mt-6'>
-            <h3 className='w-[424px] text-2xl font-medium mb-[22px]'>{product.primaryDescription || 'No description available.'}</h3>
+            <h3 className='w-[424px] text-2xl font-medium mb-[22px]'>{product.primaryDescription || 'Nenhuma descrição disponível.'}</h3>
           </div>
           <div className='border-t flex flex-col gap-10 text-base mb-[67px]'>
             <p className='mt-[41px] '>SKU: {product.SKU || 'N/A'}</p>
             <p >Categoria: {product.category}</p> 
           </div>
-          {/* <div>
-            <button className="w-[222px] h-[74px] bg-button text-white bg-slate-500 mb-8"><Link to={product.link}>COMPRE AGORA</Link></button>
-          </div> */}
         </div>
       </div>
       <div className='text-white container px-5 grid 2xl:mx-auto 2xl:py-10 font-poppins 2xl:flex 2xl:flex-col 2xl:justify-center border-t'>
@@ -81,11 +84,10 @@ const ProductDetail = () => {
               )
             ))
           ) : (
-            <p>No additional description.</p>
+            <p>Nenhuma descrição adicional.</p>
           )}
         </div>
       </div>
-
     </div>
   );
 };

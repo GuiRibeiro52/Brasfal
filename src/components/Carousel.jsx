@@ -6,19 +6,29 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Carousel = () => {
-  const [products, setProducts] = useState([]);
+  const [posts, setPosts] = useState([]);  // Usando 'posts' já que o JSON tem essa chave
+  const [loading, setLoading] = useState(true);  // Adiciona estado de carregamento
+  const [error, setError] = useState(null);  // Adiciona estado de erro
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchPosts = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/posts');
-        setProducts(response.data);
+        // Atualize a URL para o db.json hospedado no GitHub
+        const response = await axios.get('https://raw.githubusercontent.com/GuiRibeiro52/Brasfal-products/refs/heads/main/db.json');
+        if (response.data && response.data.posts) {
+          setPosts(response.data.posts);  // Acesse a chave 'posts' no JSON
+        } else {
+          setError('Produtos não encontrados.');
+        }
+        setLoading(false);  // Quando os dados forem carregados, desativa o estado de carregamento
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error fetching posts:', error);
+        setError('Erro ao carregar produtos');
+        setLoading(false);  // Desativa o estado de carregamento mesmo em caso de erro
       }
     };
 
-    fetchProducts();
+    fetchPosts();
   }, []);
 
   const settings = {
@@ -66,13 +76,28 @@ const Carousel = () => {
     ]
   };
 
+  // Verifica se há um erro
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  // Mostra uma mensagem de carregamento enquanto os produtos não são carregados
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+
+  // Verifica se posts é um array e tem elementos antes de usar .length
+  if (!Array.isArray(posts) || posts.length === 0) {
+    return <div>Nenhum produto encontrado</div>;
+  }
+
   return (
     <div className="mx-auto">
       <Slider {...settings}>
-        {products.map((product, index) => (
+        {posts.map((post, index) => (
           <div key={index} className="px-2"> 
-            <Link to={`/produtos/${product.id}`}>
-              <img src={product.image} alt={product.title} className="w-full h-[300px] rounded-lg" />
+            <Link to={`/produtos/${post.id}`}>
+              <img src={post.images[0]} alt={post.title} className="w-full h-[300px] rounded-lg" />
             </Link>  
           </div>
         ))}
