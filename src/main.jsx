@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/Brasfal",
+        path: "/",
         element: <Home />
       },
       {
